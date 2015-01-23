@@ -5,7 +5,8 @@
   "browser": "index-browser.js",
   "main": "index-node.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "zuul -- test.js",
+    "test-local": "zuul --local --open -- test.js"
   },
   "keywords": [
     "webrtc",
@@ -25,14 +26,15 @@
     "matchdep": "^0.3.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-browserify": "^3.2.1",
-    "grunt-contrib-uglify": "^0.7.0"
+    "grunt-contrib-uglify": "^0.7.0",
+    "zuul": "^1.16.5"
   },
   "repository": {
-      "type": "git",
-      "url": "https://github.com/appearin/appearin-sdk"
+    "type": "git",
+    "url": "https://github.com/appearin/appearin-sdk"
   },
   "bugs": {
-      "url": "https://github.com/appearin/appearin-sdk/issues",
-      "email": "api@appear.in"
+    "url": "https://github.com/appearin/appearin-sdk/issues",
+    "email": "api@appear.in"
   }
 }
