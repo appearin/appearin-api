@@ -1,7 +1,7 @@
 'use strict';
 
-var assert = require('chai').assert;
-var expect = require('chai').expect;
+var chai = require('chai'),
+    expect = chai.expect;
 
 var AppearIn = require('./index-browser');
 
@@ -17,13 +17,13 @@ describe('AppearIn', function() {
   describe('isWebRtcCompatible', function () {
     it('should return true if the browser has compatibility', function () {
       if (true === hasCompatibility) {
-        assert.isTrue(appearin.isWebRtcCompatible());
+        expect(appearin.isWebRtcCompatible()).to.be.true;
       }
     });
 
     it('should return false if the browser not has compatibility', function () {
       if (false === hasCompatibility) {
-        assert.isFalse(appearin.isWebRtcCompatible());
+        expect(appearin.isWebRtcCompatible()).to.be.false;
       }
     });
   });
@@ -43,14 +43,14 @@ describe('AppearIn', function() {
 
     it('should return a random room name', function (done) {
       appearin.getRandomRoomName().then(function (name) {
-        assert.isString(name);
+        expect(name).to.be.a('string');
         done();
       });
     });
 
     it('should return a room name with a leading slash', function (done) {
       appearin.getRandomRoomName().then(function (name) {
-        assert.equal(name[0], '/');
+        expect(name[0] === '/').to.be.true;
         done();
       });
     });
@@ -58,7 +58,7 @@ describe('AppearIn', function() {
 
   describe('addRoomToIframe', function () {
     it('should throw error when all parameters are missing', function () {
-      assert.throws(appearin.addRoomToIframe, Error, 'Missing parameters');
+      expect(appearin.addRoomToIframe).to.throw(Error, 'Missing parameters');
     });
 
     it('should throw error when is not a valid iframe element', function () {
