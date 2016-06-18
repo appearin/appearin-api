@@ -5,6 +5,8 @@ var chai = require('chai'),
 
 var AppearIn = require('./index-browser');
 
+var BASE_URL = 'https://appear.in';
+
 describe('AppearIn', function() {
   var appearin,
       hasCompatibility;
@@ -57,14 +59,96 @@ describe('AppearIn', function() {
   });
 
   describe('addRoomToIframe', function () {
+    var iframeElement,
+        roomName;
+
+    beforeEach(function(){
+      iframeElement = document.createElement('iframe');
+      roomName = 'anyroomname';
+    });
+    
     it('should throw error when all parameters are missing', function () {
-      expect(appearin.addRoomToIframe).to.throw(Error, 'Missing parameters');
+      expect(appearin.addRoomToIframe).to.throw(Error, 'Missing parameters or was passed as undefined');
     });
 
     it('should throw error when is not a valid iframe element', function () {
       expect(function(){
-        appearin.addRoomToIframe(document.createElement('div'), 'anyRoomName');
-      }).to.throw('This is not a iframe element.');
+        appearin.addRoomToIframe(document.createElement('div'), roomName);
+      }).to.throw('This is not an iframe element.');
+    });
+
+    it('should throw error if the iframe parameter is undefined', function () {
+      expect(function(){
+        appearin.addRoomToIframe(undefined, roomName);
+      }).to.throw(Error, 'Missing parameters or was passed as undefined');
+    });
+
+    it('should throw error if the room name parameter is undefined', function () {
+      expect(function(){
+        appearin.addRoomToIframe(iframeElement, undefined);
+      }).to.throw(Error, 'Missing parameters or was passed as undefined');
+    });
+
+    it('should attach the room to the iframe element', function () {
+      appearin.addRoomToIframe(iframeElement, roomName);
+      expect(iframeElement.src).to.be.ok;
+    });
+
+    it('should attach a room name with a prepending slash correctly', function () {
+      var roomNameWithSlash = '/' + roomName;
+      
+      appearin.addRoomToIframe(iframeElement, roomNameWithSlash);
+      expect(iframeElement.src).to.be.equal(BASE_URL + roomNameWithSlash);
+    });
+
+    it('should attach a room name with a prepending slash correctly', function () {
+      var roomNameWithSlash = '/' + roomName;
+      
+      appearin.addRoomToIframe(iframeElement, roomNameWithSlash);
+      expect(iframeElement.src).to.be.equal(BASE_URL + roomNameWithSlash);
+    });
+
+    it('should attach a room name without a prepending slash correctly', function () {
+      appearin.addRoomToIframe(iframeElement, roomName);
+      expect(iframeElement.src).to.be.equal(BASE_URL + '/' + roomName);
     });
   });
+
+  describe('addRoomToElementById', function () {
+    var idOfIframe,
+        iframeElement;
+
+    beforeEach(function(){
+      idOfIframe = 'my-appear-room';
+
+      iframeElement = document.createElement('iframe');
+      iframeElement.id = idOfIframe;
+    });
+
+    it('should throw error when all parameters are missing', function () {
+      expect(appearin.addRoomToElementById).to.throw(Error, 'Missing parameters or was passed as undefined');
+    });
+
+    it('should throw error if the iframe parameter is undefined', function () {
+      expect(function(){
+        appearin.addRoomToElementById(undefined, 'myroom');
+      }).to.throw(Error, 'Missing parameters or was passed as undefined');
+    });
+
+    it('should throw error if the room name parameter is undefined', function () {
+      expect(function(){
+        appearin.addRoomToElementById(idOfIframe, undefined);
+      }).to.throw(Error, 'Missing parameters or was passed as undefined');
+    });
+
+    it('should throw error if the element with id not found', function () {
+      var id = 'not-exists';
+
+      expect(function(){
+        appearin.addRoomToElementById(id, 'any-room');
+      }).to.throw(Error, 'The element with id ' + id + ' not found. Make sure it exists on your page.');
+    });
+
+  });
+
 });
