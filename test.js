@@ -3,7 +3,8 @@
 var chai = require('chai'),
     expect = chai.expect;
 
-var AppearIn = require('./index-browser');
+var AppearIn = require('./lib/appearin');
+var RoomUtil = require('./lib/roomNameUtil');
 
 var BASE_URL = 'https://appear.in';
 
@@ -149,6 +150,38 @@ describe('AppearIn', function() {
       }).to.throw(Error, 'The element with id ' + id + ' not found. Make sure it exists on your page.');
     });
 
+    it('should be works with a valid parameters', function () {
+      var roomName = 'any-room';
+
+      document.body.appendChild(iframeElement);
+      
+      appearin.addRoomToElementById(idOfIframe, roomName);
+      expect(iframeElement.src).to.be.equal(BASE_URL + '/' + roomName);
+    });
+
+  });
+});
+
+describe('RoomUtil', function() {
+  it('should be return in lower case the room name after normalize', function() {
+    expect(RoomUtil.normalize('/HELLOword')).to.be.equal('/helloword');
   });
 
+  it('should be return the room name with slash after normalize', function() {
+    expect(RoomUtil.normalize('with-slash-after-normalize')).to.be.equal('/with-slash-after-normalize');
+  });
+
+  it('should be return error when the room name are reserved', function() {
+    expect(function(){
+        RoomUtil.normalize('robots.txt');
+    }).to.throw(Error, 'This name are reserved. Please, choose another for your room.');
+
+    expect(function(){
+        RoomUtil.normalize('templates');
+    }).to.throw(Error, 'This name are reserved. Please, choose another for your room.');
+
+    expect(function(){
+        RoomUtil.normalize('scripts');
+    }).to.throw(Error, 'This name are reserved. Please, choose another for your room.');
+  });
 });
