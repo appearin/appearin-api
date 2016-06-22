@@ -181,6 +181,14 @@ describe('RoomUtil', function() {
     }).to.throw(Error, 'This name are reserved. Please, choose another for your room.');
 
     expect(function(){
+        RoomUtil.normalize('images/foo/bar/baz.jpg');
+    }).to.throw(Error, 'This name are reserved. Please, choose another for your room.');
+
+    expect(function(){
+        RoomUtil.normalize('information/foo');
+    }).to.throw(Error, 'This name are reserved. Please, choose another for your room.');
+
+    expect(function(){
         RoomUtil.normalize('scripts');
     }).to.throw(Error, 'This name are reserved. Please, choose another for your room.');
   });
