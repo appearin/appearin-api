@@ -1,3 +1,7 @@
+# DEPRECATED
+
+**The API has been deprecated as of 2017-06-30. See https://developer.appear.in for more information.**
+
 # appear.in JavaScript SDK
 
 The official appear.in JavaScript SDK, available for browsers.
